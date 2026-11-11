@@ -209,8 +209,8 @@ export default function FarmerAppTab({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-5 flex justify-center">
-        <div className="w-full max-w-[420px] bg-[#0D2818] rounded-[32px] p-3 shadow-2xl border-4 border-[#1F4E32]">
-          <div className="bg-[#FAF8F4] rounded-[24px] overflow-hidden">
+        <div className="w-full sm:max-w-[420px] sm:bg-[#0D2818] rounded-2xl sm:rounded-[32px] sm:p-3 shadow-sm sm:shadow-2xl border border-[#E5DFD1] sm:border-4 sm:border-[#1F4E32]">
+          <div className="bg-[#FAF8F4] rounded-2xl sm:rounded-[24px] overflow-hidden">
             <div className="bg-[#0D2818] text-white px-4 py-3.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />

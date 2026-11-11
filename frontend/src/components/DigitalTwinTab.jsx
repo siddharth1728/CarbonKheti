@@ -110,53 +110,55 @@ export default function DigitalTwinTab({
 
   return (
     <div className="space-y-6">
-      <div className="ck-card p-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            {t("twin_active_farm")}
-          </label>
-          <select
-            value={selectedFarmId || ""}
-            onChange={(e) => onSelectFarm(e.target.value)}
-            className="text-sm font-semibold bg-[#FAF8F4] border border-[#E5DFD1] rounded-lg px-3 py-2 text-[#0D2818]"
-          >
-            {farms.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.name} ({formatAcresAndHa(f.gross_area_ha, lang)})
-              </option>
-            ))}
-          </select>
+      <div className="ck-card p-3.5 sm:p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <label className="text-xs font-bold uppercase tracking-wider text-slate-500 shrink-0">
+              {t("twin_active_farm")}
+            </label>
+            <select
+              value={selectedFarmId || ""}
+              onChange={(e) => onSelectFarm(e.target.value)}
+              className="w-full sm:w-auto max-w-full min-w-0 text-sm font-semibold bg-[#FAF8F4] border border-[#E5DFD1] rounded-lg px-3 py-2 text-[#0D2818]"
+            >
+              {farms.map((f) => (
+                <option key={f.id} value={f.id}>
+                  {f.name} ({formatAcresAndHa(f.gross_area_ha, lang)})
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <div className="flex items-center gap-1 bg-[#FAF8F4] p-1 rounded-lg border border-[#E5DFD1] text-xs font-semibold">
+          <div className="grid grid-cols-3 sm:inline-flex items-center gap-1 bg-[#FAF8F4] p-1 rounded-lg border border-[#E5DFD1] text-[11px] sm:text-xs font-semibold w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setLayerMode("ndvi")}
-              className={`px-2.5 py-1 rounded-md ${layerMode === "ndvi" ? "bg-[#0D2818] text-white" : "text-slate-600"}`}
+              className={`px-2 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-center leading-tight ${layerMode === "ndvi" ? "bg-[#0D2818] text-white" : "text-slate-600"}`}
             >
               {viewMode === "farmer" ? t("ftwin_greenery") : t("twin_s2_ndvi")}
             </button>
             <button
               type="button"
               onClick={() => setLayerMode("sar")}
-              className={`px-2.5 py-1 rounded-md ${layerMode === "sar" ? "bg-blue-700 text-white" : "text-slate-600"}`}
+              className={`px-2 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-center leading-tight ${layerMode === "sar" ? "bg-blue-700 text-white" : "text-slate-600"}`}
             >
               {viewMode === "farmer" ? t("ftwin_radar") : t("twin_s1_sar")}
             </button>
             <button
               type="button"
               onClick={() => setLayerMode("boundary")}
-              className={`px-2.5 py-1 rounded-md ${layerMode === "boundary" ? "bg-[#0D2818] text-white" : "text-slate-600"}`}
+              className={`px-2 sm:px-2.5 py-1.5 sm:py-1 rounded-md text-center leading-tight ${layerMode === "boundary" ? "bg-[#0D2818] text-white" : "text-slate-600"}`}
             >
               {viewMode === "farmer" ? t("ftwin_outline") : t("twin_boundary_only")}
             </button>
           </div>
 
-          <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer">
+          <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer py-1">
             <input
               type="checkbox"
               checked={showBuffer}
               onChange={(e) => setShowBuffer(e.target.checked)}
-              className="accent-[#0D2818]"
+              className="accent-[#0D2818] w-4 h-4"
             />
             {viewMode === "farmer" ? t("ftwin_inner_zone") : t("twin_show_buffer")}
           </label>
@@ -168,7 +170,7 @@ export default function DigitalTwinTab({
             setShowRegister(!showRegister);
             setDrawingMode(!showRegister);
           }}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0D2818] text-white text-xs font-bold hover:bg-[#163A24] transition"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 min-h-[42px] rounded-lg bg-[#0D2818] text-white text-xs font-bold hover:bg-[#163A24] transition shrink-0"
         >
           <Plus className="w-4 h-4" />
           {showRegister ? t("twin_close_drawer") : t("twin_draw_btn")}
@@ -343,7 +345,7 @@ export default function DigitalTwinTab({
             drawingMode={drawingMode}
             drawnPoints={drawnPoints}
             onAddDrawPoint={(pt) => setDrawnPoints((prev) => [...prev, pt])}
-            heightClass="h-[460px]"
+            heightClass="h-[300px] sm:h-[420px] lg:h-[460px]"
             viewMode={viewMode}
             lang={lang}
           />

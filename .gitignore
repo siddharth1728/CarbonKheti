@@ -19,3 +19,8 @@ frontend/dist/
 .vercel/
 .DS_Store
 Thumbs.db
+
+.vercel
+
+.vercel
+.env*

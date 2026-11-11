@@ -81,7 +81,7 @@ export default function FraudRadarTab({
           <select
             value={selectedFarmId || ""}
             onChange={(e) => onSelectFarm(e.target.value)}
-            className="text-sm font-semibold bg-[#FAF8F4] border border-[#E5DFD1] rounded-lg px-3 py-2 text-[#0D2818]"
+            className="w-full sm:w-auto max-w-full text-sm font-semibold bg-[#FAF8F4] border border-[#E5DFD1] rounded-lg px-3 py-2 text-[#0D2818]"
           >
             {farms.map((f) => (
               <option key={f.id} value={f.id}>

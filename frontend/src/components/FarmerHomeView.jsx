@@ -29,13 +29,13 @@ export default function FarmerHomeView({
   return (
     <div className="space-y-6">
       {/* Warm Welcome Passbook Banner */}
-      <div className="rounded-2xl bg-gradient-to-br from-[#0D2818] via-[#163A24] to-[#1F4E32] text-white p-6 shadow-lg flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-2xl bg-gradient-to-br from-[#0D2818] via-[#163A24] to-[#1F4E32] text-white p-4 sm:p-6 shadow-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="max-w-2xl">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 bg-white/10 px-3 py-1 rounded-full mb-2">
             <Sprout className="w-3.5 h-3.5" />
             CarbonKheti · {lang === "te" ? "రైతు సులభ పోర్టల్" : "Farmer Easy Portal"}
           </div>
-          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">
+          <h1 className="text-lg sm:text-2xl font-extrabold tracking-tight leading-snug">
             {t("fh_welcome_title")}
           </h1>
           <p className="text-xs sm:text-sm text-emerald-100/85 mt-1 leading-relaxed">
@@ -45,7 +45,7 @@ export default function FarmerHomeView({
         <button
           type="button"
           onClick={() => onNavigateTab("twin")}
-          className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-amber-400 text-[#0D2818] text-sm font-extrabold hover:bg-amber-300 transition shadow-md shrink-0"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-xl bg-amber-400 text-[#0D2818] text-sm font-extrabold hover:bg-amber-300 transition shadow-md shrink-0"
         >
           <Plus className="w-4 h-4" />
           {t("fh_add_farm_btn")}
@@ -189,17 +189,17 @@ export default function FarmerHomeView({
                 </div>
 
                 {/* Big Thumb-Friendly Farmer Buttons */}
-                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#F3EFE6]">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-2 border-t border-[#F3EFE6]">
                   <button
                     type="button"
                     onClick={() => {
                       onSelectFarm(f.id);
                       onNavigateTab("farmer");
                     }}
-                    className="inline-flex items-center justify-center gap-1 py-2.5 px-2 rounded-xl bg-[#0D2818] text-white text-xs font-bold hover:bg-[#163A24] transition"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-1 py-2.5 px-1.5 min-h-[46px] rounded-xl bg-[#0D2818] text-white text-[11px] sm:text-xs font-bold leading-tight text-center hover:bg-[#163A24] transition"
                   >
-                    <Camera className="w-3.5 h-3.5" />
-                    {t("fh_btn_photo")}
+                    <Camera className="w-4 h-4 sm:w-3.5 sm:h-3.5 shrink-0" />
+                    <span>{t("fh_btn_photo")}</span>
                   </button>
                   <button
                     type="button"
@@ -207,10 +207,10 @@ export default function FarmerHomeView({
                       onSelectFarm(f.id);
                       onNavigateTab("twin");
                     }}
-                    className="inline-flex items-center justify-center gap-1 py-2.5 px-2 rounded-xl bg-[#F3EFE6] text-[#0D2818] text-xs font-bold hover:bg-[#E5DFD1] transition"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-1 py-2.5 px-1.5 min-h-[46px] rounded-xl bg-[#F3EFE6] text-[#0D2818] text-[11px] sm:text-xs font-bold leading-tight text-center hover:bg-[#E5DFD1] transition"
                   >
-                    <MapIcon className="w-3.5 h-3.5" />
-                    {t("fh_btn_map")}
+                    <MapIcon className="w-4 h-4 sm:w-3.5 sm:h-3.5 shrink-0" />
+                    <span>{t("fh_btn_map")}</span>
                   </button>
                   <button
                     type="button"
@@ -218,10 +218,10 @@ export default function FarmerHomeView({
                       onSelectFarm(f.id);
                       onNavigateTab("passport");
                     }}
-                    className="inline-flex items-center justify-center gap-1 py-2.5 px-2 rounded-xl bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 transition"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-1 py-2.5 px-1.5 min-h-[46px] rounded-xl bg-emerald-700 text-white text-[11px] sm:text-xs font-bold leading-tight text-center hover:bg-emerald-800 transition"
                   >
-                    <FileCheck2 className="w-3.5 h-3.5" />
-                    {t("fh_btn_cert")}
+                    <FileCheck2 className="w-4 h-4 sm:w-3.5 sm:h-3.5 shrink-0" />
+                    <span>{t("fh_btn_cert")}</span>
                   </button>
                 </div>
               </div>

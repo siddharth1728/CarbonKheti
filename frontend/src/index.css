@@ -13,10 +13,20 @@
     --ck-earth-600: #b45309;
   }
 
+  html,
+  body {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     font-family: "Plus Jakarta Sans", "Noto Sans Telugu", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background-color: var(--ck-ivory-50);
     color: #111c15;
+  }
+
+  .pb-safe {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 
   .font-mono {
