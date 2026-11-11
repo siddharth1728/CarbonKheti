@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Runtime SQLite DB & user photo uploads (regenerated via seed_database_if_empty)
+data/carbonkheti.db
+data/carbonkheti.db-*
+data/uploads/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Vercel / OS
+.vercel/
+.DS_Store
+Thumbs.db

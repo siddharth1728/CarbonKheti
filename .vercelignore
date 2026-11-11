@@ -1,0 +1,8 @@
+frontend/node_modules
+.git
+__pycache__
+.pytest_cache
+tests
+data/carbonkheti.db
+data/uploads
+*.pyc

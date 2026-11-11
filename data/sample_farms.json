@@ -1,0 +1,224 @@
+[
+  {
+    "farm_id": "FARM-TLG-01",
+    "name": "Nangunur Bund-Teak Agroforestry",
+    "farmer": "Ramesh Reddy",
+    "district": "Siddipet",
+    "state": "Telangana",
+    "gross_area_ha": 1.4784,
+    "core_area_ha": 1.0308,
+    "polygon_geojson": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            78.8936,
+            18.09798
+          ],
+          [
+            78.89488,
+            18.098022
+          ],
+          [
+            78.8948,
+            18.09902
+          ],
+          [
+            78.89364,
+            18.099041
+          ],
+          [
+            78.8936,
+            18.09798
+          ]
+        ]
+      ]
+    },
+    "latest_issuable_co2e_t": 39.904
+  },
+  {
+    "farm_id": "FARM-AP-02",
+    "name": "Kalyandurg Mango Horti-Silviculture",
+    "farmer": "Lakshmi Devi",
+    "district": "Anantapur",
+    "state": "Andhra Pradesh",
+    "gross_area_ha": 1.0862,
+    "core_area_ha": 0.7081,
+    "polygon_geojson": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            77.10788,
+            14.55166
+          ],
+          [
+            77.10892,
+            14.551695
+          ],
+          [
+            77.10892,
+            14.55254
+          ],
+          [
+            77.10788,
+            14.552558
+          ],
+          [
+            77.10788,
+            14.55166
+          ]
+        ]
+      ]
+    },
+    "latest_issuable_co2e_t": 17.515
+  },
+  {
+    "farm_id": "FARM-PNJ-03",
+    "name": "Jagraon Poplar-Wheat Alley Plot",
+    "farmer": "Gurpreet Singh",
+    "district": "Ludhiana",
+    "state": "Punjab",
+    "gross_area_ha": 1.9584,
+    "core_area_ha": 1.4384,
+    "polygon_geojson": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            75.47275,
+            30.78858
+          ],
+          [
+            75.47425,
+            30.78863
+          ],
+          [
+            75.47425,
+            30.78982
+          ],
+          [
+            75.47275,
+            30.789845
+          ],
+          [
+            75.47275,
+            30.78858
+          ]
+        ]
+      ]
+    },
+    "latest_issuable_co2e_t": 74.222
+  },
+  {
+    "farm_id": "FARM-MHA-04",
+    "name": "Ralegaon Cloud-Resilient Subabul",
+    "farmer": "Sunita Deshmukh",
+    "district": "Yavatmal",
+    "state": "Maharashtra",
+    "gross_area_ha": 1.2353,
+    "core_area_ha": 0.8301,
+    "polygon_geojson": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            78.52254,
+            20.41712
+          ],
+          [
+            78.52366,
+            20.417158
+          ],
+          [
+            78.52366,
+            20.41808
+          ],
+          [
+            78.52254,
+            20.418099
+          ],
+          [
+            78.52254,
+            20.41712
+          ]
+        ]
+      ]
+    },
+    "latest_issuable_co2e_t": 0.0
+  },
+  {
+    "farm_id": "FARM-KRN-05",
+    "name": "Kalghatgi Micro-Plot (0.28 ha)",
+    "farmer": "Basavaraj Patil",
+    "district": "Dharwad",
+    "state": "Karnataka",
+    "gross_area_ha": 0.3182,
+    "core_area_ha": 0.132,
+    "polygon_geojson": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            74.97092,
+            15.18416
+          ],
+          [
+            74.97148,
+            15.184179
+          ],
+          [
+            74.97148,
+            15.18464
+          ],
+          [
+            74.97092,
+            15.18465
+          ],
+          [
+            74.97092,
+            15.18416
+          ]
+        ]
+      ]
+    },
+    "latest_issuable_co2e_t": 2.028
+  },
+  {
+    "farm_id": "FARM-FRD-06",
+    "name": "Siddipet Adjacent Claim (Overlap Case)",
+    "farmer": "Vikram Rao (Test Overlap)",
+    "district": "Siddipet",
+    "state": "Telangana",
+    "gross_area_ha": 1.2081,
+    "core_area_ha": 0.808,
+    "polygon_geojson": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            78.89416,
+            18.09842
+          ],
+          [
+            78.89524,
+            18.098458
+          ],
+          [
+            78.89524,
+            18.09938
+          ],
+          [
+            78.89416,
+            18.099399
+          ],
+          [
+            78.89416,
+            18.09842
+          ]
+        ]
+      ]
+    },
+    "latest_issuable_co2e_t": 4.363
+  }
+]
