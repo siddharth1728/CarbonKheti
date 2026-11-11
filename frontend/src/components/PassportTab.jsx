@@ -173,7 +173,12 @@ export default function PassportTab({
             </div>
             <div className="bg-white/10 rounded-xl p-3.5">
               <div className="text-emerald-200/80">{t("cp_carbon_lbl")}</div>
-              <div className="text-lg font-extrabold mt-0.5">{est ? est.carbon_tC : 0} tC</div>
+              <div className="text-lg font-extrabold mt-0.5">
+                {est ? est.carbon_tC : 0}{" "}
+                <span className="text-xs font-bold">
+                  {viewMode === "farmer" ? t("fcp_tonnes_unit") : "tC"}
+                </span>
+              </div>
               <div className="text-[11px] text-emerald-100/75">
                 {lang === "te" ? "చెట్ల కర్ర & వేర్ల నుండి" : "From wood & root growth"}
               </div>
@@ -226,6 +231,17 @@ export default function PassportTab({
 
           <div className="lg:col-span-6 ck-card p-5 space-y-3">
             <h3 className="text-sm font-extrabold text-[#0D2818]">{t("fcp_shields_title")}</h3>
+            {farm?.verification_status === "FLAGGED_REVIEW" && (
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-950 space-y-1">
+                <div className="font-extrabold flex items-center gap-1.5">
+                  <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0" />
+                  {t("fcp_attention_title")}
+                </div>
+                <p className="text-[11px] leading-relaxed opacity-90">
+                  {overlapFlag ? t("fcp_shield1_d_warn") : t("fcp_shield2_d_warn")}
+                </p>
+              </div>
+            )}
             <div className="space-y-2.5 text-xs">
               <div className={`flex items-start gap-3 p-3 rounded-xl border ${!overlapFlag ? "bg-emerald-50/70 border-emerald-200" : "bg-amber-50 border-amber-200"}`}>
                 <MapPin className={`w-5 h-5 shrink-0 ${!overlapFlag ? "text-emerald-700" : "text-amber-700"}`} />

@@ -77,7 +77,7 @@ export default function DigitalTwinTab({
   const handleRegisterFarm = async (e) => {
     e.preventDefault();
     if (drawnPoints.length < 3) {
-      setMsg({ type: "error", text: "Tap at least 3 corners on the map (or load sample polygon)." });
+      setMsg({ type: "error", text: t("ftwin_min_corners") });
       return;
     }
     setSubmitting(true);
@@ -251,11 +251,11 @@ export default function DigitalTwinTab({
                 onChange={(e) => setForm({ ...form, agroforestry_type: e.target.value })}
                 className="w-full text-xs border border-[#E5DFD1] rounded-lg px-2.5 py-2 bg-[#FAF8F4]"
               >
-                <option>Boundary / Bund Planting</option>
-                <option>Agri-Silviculture / Alley Cropping</option>
-                <option>Horti-Silviculture</option>
-                <option>Silvopasture</option>
-                <option>Windbreaks &amp; Shelterbelts</option>
+                <option value="Boundary / Bund Planting">{t("ftwin_type_bund")}</option>
+                <option value="Agri-Silviculture / Alley Cropping">{t("ftwin_type_alley")}</option>
+                <option value="Horti-Silviculture">{t("ftwin_type_horti")}</option>
+                <option value="Silvopasture">{t("ftwin_type_silvo")}</option>
+                <option value="Windbreaks & Shelterbelts">{t("ftwin_type_wind")}</option>
               </select>
             </div>
             <div>
@@ -454,6 +454,15 @@ export default function DigitalTwinTab({
                       </div>
                     </div>
                   </div>
+                  {dossier?.latest_estimate && (
+                    <div className="p-3 rounded-xl bg-[#FAF8F4] border border-[#E5DFD1] flex items-center justify-between gap-2 text-xs">
+                      <span className="text-slate-600 font-semibold">{t("ftwin_carbon_summary")}</span>
+                      <span className="font-extrabold text-emerald-800 shrink-0">
+                        {dossier.latest_estimate.co2e_conservatively_issuable_t}{" "}
+                        {lang === "te" ? "యూనిట్లు" : "Units"}
+                      </span>
+                    </div>
+                  )}
                   {obsB.radar_fallback_used ? (
                     <div className="flex items-center gap-1.5 text-xs text-blue-800 bg-blue-50 p-2.5 rounded-lg border border-blue-200">
                       <CloudRain className="w-4 h-4 shrink-0" />

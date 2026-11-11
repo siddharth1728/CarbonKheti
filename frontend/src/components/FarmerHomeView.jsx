@@ -23,8 +23,11 @@ export default function FarmerHomeView({
   if (!dashboard) return null;
   const { summary, farms } = dashboard;
 
-  const clearCount = farms.filter((f) => f.verification_status !== "FLAGGED_REVIEW").length;
-  const flaggedCount = farms.length - clearCount;
+  const clearCount = farms.filter((f) => f.verification_status === "VERIFIED_PROTOTYPE").length;
+  const flaggedCount = farms.filter((f) => f.verification_status === "FLAGGED_REVIEW").length;
+  const pendingCount = Math.max(0, farms.length - clearCount - flaggedCount);
+  const flaggedFarm = farms.find((f) => f.verification_status === "FLAGGED_REVIEW") || null;
+  const primaryFarm = farms[0] || null;
 
   return (
     <div className="space-y-6">
@@ -89,22 +92,69 @@ export default function FarmerHomeView({
             <span>{t("fh_kpi_trust")}</span>
             <ShieldCheck className="w-5 h-5 text-emerald-700" />
           </div>
-          <div className="mt-2 flex items-center gap-3">
-            <span className="text-2xl font-extrabold text-emerald-800">
-              {clearCount} ✓
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 text-sm font-extrabold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900">
+              {clearCount} {t("fh_farms_clear")}
             </span>
-            <span className="text-xs font-semibold text-slate-600">{t("fh_farms_clear")}</span>
+            {pendingCount > 0 && (
+              <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+                {pendingCount} {t("fh_status_pending")}
+              </span>
+            )}
             {flaggedCount > 0 && (
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900">
+              <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900">
                 {flaggedCount} {t("fh_needs_check")}
               </span>
             )}
           </div>
-          <div className="mt-1 text-xs text-slate-500">
+          <div className="mt-1.5 text-xs text-slate-500">
             {lang === "te" ? "అన్ని రికార్డులకు డిజిటల్ తాళం ఉంది" : "Every record has a tamper-proof digital lock"}
           </div>
         </div>
       </div>
+
+      {/* Next Recommended Action Spotlight */}
+      {(flaggedFarm || primaryFarm) && (
+        <div
+          className={`rounded-2xl p-4 sm:p-5 border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
+            flaggedFarm
+              ? "bg-amber-50 border-amber-300 text-amber-950"
+              : "bg-emerald-50 border-emerald-200 text-emerald-950"
+          }`}
+        >
+          <div className="flex items-start gap-3">
+            {flaggedFarm ? (
+              <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+            ) : (
+              <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+            )}
+            <div className="text-xs sm:text-sm">
+              <div className="font-extrabold">
+                {t("fh_next_action_title")}
+                {flaggedFarm ? `: ${flaggedFarm.name}` : ""}
+              </div>
+              <p className="text-xs opacity-90 mt-0.5 leading-relaxed">
+                {flaggedFarm ? t("fh_next_fix_desc") : t("fh_next_ok_desc")}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const target = flaggedFarm || primaryFarm;
+              onSelectFarm(target.id);
+              onNavigateTab(flaggedFarm ? "farmer" : "passport");
+            }}
+            className={`w-full sm:w-auto shrink-0 px-4 py-2.5 min-h-[42px] rounded-xl text-xs font-extrabold transition ${
+              flaggedFarm
+                ? "bg-amber-600 text-white hover:bg-amber-700"
+                : "bg-[#0D2818] text-white hover:bg-[#163A24]"
+            }`}
+          >
+            {flaggedFarm ? t("fh_next_fix_btn") : t("fh_next_ok_btn")}
+          </button>
+        </div>
+      )}
 
       {/* Farm Passbook Cards */}
       <div>
@@ -116,6 +166,8 @@ export default function FarmerHomeView({
             const radar = f.latest_observation?.radar_fallback_used;
             const units = f.latest_estimate?.co2e_conservatively_issuable_t ?? 0;
             const isWarn = f.verification_status === "FLAGGED_REVIEW";
+            const isVerified = f.verification_status === "VERIFIED_PROTOTYPE";
+            const isPending = !isWarn && !isVerified;
 
             return (
               <div key={f.id} className="ck-card p-5 flex flex-col justify-between space-y-4">
@@ -135,12 +187,16 @@ export default function FarmerHomeView({
                     {isWarn ? (
                       <span className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold">
                         <ShieldAlert className="w-3.5 h-3.5" />
-                        {lang === "te" ? "తనిఖీ" : "Check"}
+                        {t("fh_status_warn")}
+                      </span>
+                    ) : isPending ? (
+                      <span className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">
+                        {t("fh_status_pending")}
                       </span>
                     ) : (
                       <span className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold">
                         <CheckCircle2 className="w-3.5 h-3.5" />
-                        {lang === "te" ? "సురక్షితం" : "Verified"}
+                        {t("fh_status_ok")}
                       </span>
                     )}
                   </div>
@@ -179,13 +235,18 @@ export default function FarmerHomeView({
                     </div>
                   )}
 
-                  <div
-                    className={`text-[11px] font-semibold ${
-                      isWarn ? "text-amber-800" : "text-emerald-800"
-                    }`}
-                  >
-                    {isWarn ? `⚠ ${t("fh_status_warn")}` : `✓ ${t("fh_status_ok")}`}
-                  </div>
+                  {isWarn ? (
+                    <div className="text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-2.5 leading-relaxed">
+                      ⚠{" "}
+                      {f.name.toLowerCase().includes("overlap") || f.name.toLowerCase().includes("disputed")
+                        ? t("fh_fix_overlap")
+                        : t("fh_fix_photo")}
+                    </div>
+                  ) : (
+                    <div className="text-[11px] font-semibold text-emerald-800">
+                      ✓ {isPending ? t("fh_status_pending") : t("fh_status_ok")}
+                    </div>
+                  )}
                 </div>
 
                 {/* Big Thumb-Friendly Farmer Buttons */}

@@ -257,12 +257,28 @@ export default function App() {
         }`}
       >
         {loading ? (
-          <div className="ck-card p-12 text-center text-sm font-semibold text-slate-600">
-            {t("loadingText")}
+          <div className="space-y-6" aria-busy="true" aria-label={t("loadingText")}>
+            <div className="rounded-2xl bg-[#163A24]/15 h-32 animate-pulse" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="ck-card p-5 h-28 animate-pulse bg-white/80" />
+              <div className="ck-card p-5 h-28 animate-pulse bg-white/80" />
+              <div className="ck-card p-5 h-28 animate-pulse bg-white/80" />
+            </div>
+            <div className="text-center text-xs font-semibold text-slate-600">{t("loadingText")}</div>
           </div>
         ) : error ? (
-          <div className="p-5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-800 font-semibold">
-            API Error: {error}
+          <div className="p-5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-900 font-semibold flex flex-wrap items-center justify-between gap-3">
+            <span>{error}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setLoading(true);
+                loadData(selectedFarmId);
+              }}
+              className="px-4 py-2 rounded-lg bg-[#0D2818] text-white text-xs font-bold hover:bg-[#163A24]"
+            >
+              {t("retryBtn")}
+            </button>
           </div>
         ) : (
           <>
@@ -329,6 +345,7 @@ export default function App() {
                 onRefreshAll={loadData}
                 t={t}
                 viewMode={viewMode}
+                lang={lang}
               />
             )}
             {activeTab === "passport" && (

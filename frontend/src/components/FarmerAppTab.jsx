@@ -24,6 +24,7 @@ export default function FarmerAppTab({
   onRefreshAll,
   t,
   viewMode = "farmer",
+  lang = "en",
 }) {
   const [farmerForm, setFarmerForm] = useState({
     name: "",
@@ -41,6 +42,7 @@ export default function FarmerAppTab({
   const [claimedTrees, setClaimedTrees] = useState(true);
   const [notes, setNotes] = useState("గట్టుపై టేకు & వేప మొక్కలు / Bund teak & neem trees");
   const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState(null);
   const [samplePhotos, setSamplePhotos] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
@@ -51,6 +53,16 @@ export default function FarmerAppTab({
       return [];
     }
   });
+
+  useEffect(() => {
+    if (!photoFile) {
+      setPhotoPreviewUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(photoFile);
+    setPhotoPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [photoFile]);
 
   useEffect(() => {
     api.getSamplePhotos().then((d) => setSamplePhotos(d.sample_photos || [])).catch(() => {});
@@ -107,7 +119,7 @@ export default function FarmerAppTab({
     const blob = await res.blob();
     const f = new File([blob], filename, { type: "image/jpeg" });
     setPhotoFile(f);
-    setUploadResult({ info: `Photo ready: ${filename}` });
+    setUploadResult({ info: `${t("ffa_photo_ready")}: ${filename}` });
   };
 
   const fileToDataUrl = (file) =>
@@ -121,7 +133,7 @@ export default function FarmerAppTab({
   const handleSubmitEvidence = async (e) => {
     e.preventDefault();
     if (!selectedFarmId || !photoFile) {
-      setUploadResult({ error: "Select a farm and attach/load a field photo first." });
+      setUploadResult({ error: t("ffa_select_photo_err") });
       return;
     }
 
@@ -289,8 +301,10 @@ export default function FarmerAppTab({
                 ) : (
                   gpsLat && (
                     <div className="text-[11px] font-semibold text-emerald-800 flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      Location captured ({gpsLat}, {gpsLon})
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                      <span>
+                        {t("ffa_gps_ok")} ({gpsLat}, {gpsLon})
+                      </span>
                     </div>
                   )
                 )}
@@ -298,15 +312,29 @@ export default function FarmerAppTab({
 
               {/* Step 3 */}
               <div className="bg-white p-3 rounded-xl border border-[#E5DFD1] space-y-2.5">
-                <label className="block font-extrabold text-[#0D2818]">
+                <label htmlFor="ck-photo-upload" className="block font-extrabold text-[#0D2818]">
                   {viewMode === "farmer" ? t("ffa_step3") : t("fa_photo_lbl")}
                 </label>
                 <input
+                  id="ck-photo-upload"
                   type="file"
                   accept="image/*"
                   onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
-                  className="w-full text-[11px] file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#0D2818] file:text-white file:font-semibold"
+                  className="w-full text-xs file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#0D2818] file:text-white file:font-semibold"
                 />
+                {photoPreviewUrl && (
+                  <div className="flex items-center gap-2.5 p-2 rounded-lg bg-[#FAF8F4] border border-[#E5DFD1]">
+                    <img
+                      src={photoPreviewUrl}
+                      alt={photoFile?.name || "Preview"}
+                      className="w-14 h-14 rounded-lg object-cover border border-[#E5DFD1] shrink-0"
+                    />
+                    <div className="min-w-0 text-[11px]">
+                      <div className="font-bold text-emerald-800">{t("ffa_photo_ready")}</div>
+                      <div className="text-slate-600 truncate">{photoFile?.name}</div>
+                    </div>
+                  </div>
+                )}
                 {samplePhotos.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {samplePhotos.map((sp) => (
@@ -391,51 +419,83 @@ export default function FarmerAppTab({
             {t("fa_onboard_title")}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <input
-              type="text"
-              required
-              placeholder={t("fa_name_ph")}
-              value={farmerForm.name}
-              onChange={(e) => setFarmerForm({ ...farmerForm, name: e.target.value })}
-              className="border border-[#E5DFD1] rounded-lg px-3 py-2.5"
-            />
-            <input
-              type="text"
-              required
-              placeholder={t("fa_village_ph")}
-              value={farmerForm.village}
-              onChange={(e) => setFarmerForm({ ...farmerForm, village: e.target.value })}
-              className="border border-[#E5DFD1] rounded-lg px-3 py-2.5"
-            />
-            <input
-              type="text"
-              required
-              placeholder={t("fa_district_ph")}
-              value={farmerForm.district}
-              onChange={(e) => setFarmerForm({ ...farmerForm, district: e.target.value })}
-              className="border border-[#E5DFD1] rounded-lg px-3 py-2.5"
-            />
-            <input
-              type="text"
-              required
-              placeholder={t("fa_state_ph")}
-              value={farmerForm.state}
-              onChange={(e) => setFarmerForm({ ...farmerForm, state: e.target.value })}
-              className="border border-[#E5DFD1] rounded-lg px-3 py-2.5"
-            />
-            <input
-              type="text"
-              placeholder={t("fa_doc_ph")}
-              value={farmerForm.land_doc_ref}
-              onChange={(e) => setFarmerForm({ ...farmerForm, land_doc_ref: e.target.value })}
-              className="border border-[#E5DFD1] rounded-lg px-3 py-2.5"
-            />
-            <button
-              type="submit"
-              className="rounded-lg bg-[#0D2818] text-white font-bold px-4 py-2.5 hover:bg-[#163A24]"
-            >
-              {t("fa_register_btn")}
-            </button>
+            <div>
+              <label htmlFor="ck-farmer-name" className="block text-[11px] font-semibold text-slate-600 mb-1">
+                {t("ffa_lbl_name")}
+              </label>
+              <input
+                id="ck-farmer-name"
+                type="text"
+                required
+                placeholder={t("fa_name_ph")}
+                value={farmerForm.name}
+                onChange={(e) => setFarmerForm({ ...farmerForm, name: e.target.value })}
+                className="w-full border border-[#E5DFD1] rounded-lg px-3 py-2.5 text-sm sm:text-xs"
+              />
+            </div>
+            <div>
+              <label htmlFor="ck-farmer-village" className="block text-[11px] font-semibold text-slate-600 mb-1">
+                {t("ffa_lbl_village")}
+              </label>
+              <input
+                id="ck-farmer-village"
+                type="text"
+                required
+                placeholder={t("fa_village_ph")}
+                value={farmerForm.village}
+                onChange={(e) => setFarmerForm({ ...farmerForm, village: e.target.value })}
+                className="w-full border border-[#E5DFD1] rounded-lg px-3 py-2.5 text-sm sm:text-xs"
+              />
+            </div>
+            <div>
+              <label htmlFor="ck-farmer-district" className="block text-[11px] font-semibold text-slate-600 mb-1">
+                {t("ffa_lbl_district")}
+              </label>
+              <input
+                id="ck-farmer-district"
+                type="text"
+                required
+                placeholder={t("fa_district_ph")}
+                value={farmerForm.district}
+                onChange={(e) => setFarmerForm({ ...farmerForm, district: e.target.value })}
+                className="w-full border border-[#E5DFD1] rounded-lg px-3 py-2.5 text-sm sm:text-xs"
+              />
+            </div>
+            <div>
+              <label htmlFor="ck-farmer-state" className="block text-[11px] font-semibold text-slate-600 mb-1">
+                {t("ffa_lbl_state")}
+              </label>
+              <input
+                id="ck-farmer-state"
+                type="text"
+                required
+                placeholder={t("fa_state_ph")}
+                value={farmerForm.state}
+                onChange={(e) => setFarmerForm({ ...farmerForm, state: e.target.value })}
+                className="w-full border border-[#E5DFD1] rounded-lg px-3 py-2.5 text-sm sm:text-xs"
+              />
+            </div>
+            <div>
+              <label htmlFor="ck-farmer-doc" className="block text-[11px] font-semibold text-slate-600 mb-1">
+                {t("ffa_lbl_doc")}
+              </label>
+              <input
+                id="ck-farmer-doc"
+                type="text"
+                placeholder={t("fa_doc_ph")}
+                value={farmerForm.land_doc_ref}
+                onChange={(e) => setFarmerForm({ ...farmerForm, land_doc_ref: e.target.value })}
+                className="w-full border border-[#E5DFD1] rounded-lg px-3 py-2.5 text-sm sm:text-xs"
+              />
+            </div>
+            <div className="flex items-end">
+              <button
+                type="submit"
+                className="w-full min-h-[42px] rounded-lg bg-[#0D2818] text-white font-bold px-4 py-2.5 hover:bg-[#163A24] transition"
+              >
+                {t("fa_register_btn")}
+              </button>
+            </div>
           </div>
           {farmerMsg && <div className="text-xs font-semibold text-emerald-800">{farmerMsg}</div>}
           <div className="text-[11px] text-slate-500">
@@ -448,53 +508,66 @@ export default function FarmerAppTab({
             <Camera className="w-4 h-4 text-[#163A24]" />
             {t("fa_history_title")} ({dossier?.farm?.name})
           </h3>
-          <div className="space-y-3">
-            {(dossier?.evidence_records || []).map((ev) => (
-              <div
-                key={ev.id}
-                className="flex flex-col sm:flex-row gap-3 p-3 rounded-xl border border-[#E5DFD1] bg-[#FAF8F4]"
-              >
-                <img
-                  src={ev.file_path}
-                  alt={ev.original_filename}
-                  className="w-28 h-20 object-cover rounded-lg border border-[#E5DFD1] shrink-0"
-                />
-                <div className="flex-1 text-xs space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#0D2818]">{ev.original_filename}</span>
-                    <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                        ev.status === "VERIFIED"
-                          ? "bg-emerald-100 text-emerald-800"
-                          : "bg-amber-100 text-amber-900"
-                      }`}
-                    >
-                      {ev.status === "VERIFIED" ? (
-                        <span className="inline-flex items-center gap-1">
-                          <CheckCircle2 className="w-3 h-3" /> VERIFIED
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1">
-                          <AlertTriangle className="w-3 h-3" /> CHECK NEEDED
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  {viewMode === "auditor" && (
-                    <div className="font-mono text-[11px] text-slate-600">
-                      SHA-256: {ev.file_sha256.slice(0, 18)}… · dHash: {ev.perceptual_dhash}
+          {(dossier?.evidence_records || []).length === 0 ? (
+            <div className="p-6 rounded-xl bg-[#FAF8F4] border border-dashed border-[#E5DFD1] text-center text-xs text-slate-600">
+              {t("ffa_empty_photos")}
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {(dossier?.evidence_records || []).map((ev) => (
+                <div
+                  key={ev.id}
+                  className="flex flex-col sm:flex-row gap-3 p-3 rounded-xl border border-[#E5DFD1] bg-[#FAF8F4]"
+                >
+                  <img
+                    src={ev.file_path}
+                    alt={ev.original_filename}
+                    className="w-full sm:w-28 h-36 sm:h-20 object-cover rounded-lg border border-[#E5DFD1] shrink-0"
+                  />
+                  <div className="flex-1 text-xs space-y-1">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="font-bold text-[#0D2818] break-all">{ev.original_filename}</span>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
+                          ev.status === "VERIFIED"
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-amber-100 text-amber-900"
+                        }`}
+                      >
+                        {ev.status === "VERIFIED" ? (
+                          <span className="inline-flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3" /> {t("ffa_verified_pill")}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3" /> {t("ffa_attention_pill")}
+                          </span>
+                        )}
+                      </span>
                     </div>
-                  )}
-                  <div className="text-[11px] text-slate-600">
-                    {ev.exif_present
-                      ? `GPS & Camera Verified (${ev.upload_timestamp.slice(0, 10)})`
-                      : "No camera GPS found inside photo"}
+                    {viewMode === "auditor" && (
+                      <div className="font-mono text-[11px] text-slate-600">
+                        SHA-256: {ev.file_sha256.slice(0, 18)}… · dHash: {ev.perceptual_dhash}
+                      </div>
+                    )}
+                    <div className="text-[11px] text-slate-700 font-medium">
+                      {ev.exif_present
+                        ? `${t("ffa_gps_verified")} (${ev.upload_timestamp.slice(0, 10)})`
+                        : t("ffa_gps_missing")}
+                    </div>
+                    {ev.status !== "VERIFIED" && viewMode === "farmer" && (
+                      <div className="text-[11px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-2 mt-1 leading-relaxed">
+                        {t("ffa_check_photo_fix")}
+                      </div>
+                    )}
+                    <div className="text-[11px] text-slate-500">
+                      {lang === "te" && ev.status !== "VERIFIED" ? t("ffa_gps_missing") : ev.notes}
+                    </div>
                   </div>
-                  <div className="text-[11px] text-slate-500">{ev.notes}</div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
